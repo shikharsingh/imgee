@@ -26,7 +26,8 @@ app.use(bodyParser.json());
 
 // Configure Routers 
 app.use(config.apiRoot+config.imagesRoot, ImageRouter);
-app.use(config.apiRoot+config.usersRoot, UserRouter); 
+app.use(config.apiRoot+config.usersRoot, UserRouter);
+
 
 app.listen(port);
 console.log('Imgee running on port ' + port);

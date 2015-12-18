@@ -9,3 +9,8 @@ module.exports = {
 	'imagesRoot' : '/images',
 	'usersRoot' : '/users', 
 }; 
+
+/* Bugs to fix 
+ - Users API needs to handle errors with control flow. requests continue... 
+ */ 
+ 

@@ -6,9 +6,10 @@ var Schema = mongoose.Schema;
 
 // Define a mongoose model and pass it with module.exports 
 module.exports = mongoose.model('Users', new Schema({
-	name: String, 
+	username: String, 
 	password: String, 
-	created: Date, 
+	created: Date,
+	imageCount: Number,
 	isAdmin: Boolean
 }));
 
