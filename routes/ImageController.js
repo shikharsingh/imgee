@@ -52,9 +52,15 @@ router.route('/:name')
 		Images.findOne({name: req.params.name}, function(err, image){
 			if(err)
 				res.json({error:" couldn't find the image!"});
-			var buff = new Buffer(image.base64, 'base64');
-			res.setHeader('Content-Type', 'image/jpg'); 
-			res.send(buff);
+
+			// add one to the serveCount
+			image.requestCount += 1; 
+			image.save(function(err){
+				console.log(image);
+				var buff = new Buffer(image.base64, 'base64');
+				res.setHeader('Content-Type', 'image/jpg'); 
+				res.send(buff);
+			}); 
 		}); 
 		
 	})
