@@ -12,12 +12,12 @@ router.get('/help', function(req, res){
 
 // todo: configure middleware to auth the user 
 
-//define a post route to create a new Image 
+//define a route for working with named images
 router.route('/:name')
+	//define a POST route to create a new Image from base64 text 
 	.post(function(req, res){
-		//scrub inputs 
 		if (!req.params.name || !req.body.base64)
-			throwError('500 invalid params'); 
+			res.json({error:"invalid params!"});
 
 		Images.findOne({name: req.params.name}, function(err, image){
 			if(!err)
@@ -35,7 +35,7 @@ router.route('/:name')
 		image.save(function(err, image){
 			if(err)
 				res.json({error: err});
-			console.log(image);
+
 			res.json({
 				success: true, 
 				id: image.id, 
@@ -44,30 +44,32 @@ router.route('/:name')
 		});
 
 	})
+	//define a GET route to return an image by submitted name
 	.get(function(req, res){
 		if (!req.params.name)
-			res.json({error: "Invalid params"});
+			res.json({error:"invalid params!"});
 
 		Images.findOne({name: req.params.name}, function(err, image){
 			if(err)
-				throwError("couldn't find the image");
+				res.json({error:" couldn't find the image!"});
 			var buff = new Buffer(image.base64, 'base64');
 			res.setHeader('Content-Type', 'image/jpg'); 
 			res.send(buff);
 		}); 
 		
 	})
+	//define a PUT route to update a submitted image
 	.put(function(req, res){
 		if (!req.params.name || !req.body.base64)
 			res.json({error: "Invalid params"});
 
 		Images.findOne({name: req.params.name}, function(err, image){
 			if(err)
-				throwError("couldn't find the image");
+				res.json({error:" couldn't find the image!"});
 			image.base64 = req.body.base64;
 			image.save(function(err){
 				if (err)
-						throwError("couldn't update the image"); 
+					res.json({error: "couldn't update the image!"});
 				res.json({
 					message: 'success - image updated',
 					id: image.id, 
